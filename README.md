@@ -46,3 +46,6 @@ you can uncomment _again_ the section
 `#    network_mode: host`. This will allow you to do so but faced with another limitation 
 which is you cannot access the api from your localhost. This time you are refused by the app. 
 This is to be expected since `Published ports are discarded when using host network`
+
+##### Note
+My Github account got tangled on my IDE so i need to authorized my other Github account so i can commit my changes
