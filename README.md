@@ -17,9 +17,9 @@ To run this program, you will need
 ## How to Run
 
 - Verify and download dependencies `make build`
-- Run the docker to serve database `make docker`
-- Run the application `make run`
-
+- Run the the service using docker with `make docker`
+- To stop the docker use `make stop`
+- To remove the docker container use `make down`
 
 ### API List
 
@@ -33,7 +33,7 @@ You can check the swagger info for API Documentation by visiting
 http://localhost:9000/api/swagger/index.html
 
 
-### Limitation
+### Limitation v1.0.0
 
 This services only run the db on docker. I still cannot join both the app and db dockers into 1 container.
 Somehow the db always refuse the connection from the app. Still searching for the workaround for this one.
@@ -46,6 +46,10 @@ you can uncomment _again_ the section
 `#    network_mode: host`. This will allow you to do so but faced with another limitation 
 which is you cannot access the api from your localhost. This time you are refused by the app. 
 This is to be expected since `Published ports are discarded when using host network`
+
+### V1.1.0
+
+If you want to experience the full functionality of the services, use version V1.1.0 and follow the step `How to Run` above 
 
 ##### Note
 My Github account got tangled on my IDE so i need to authorized my other Github account so i can commit my changes

@@ -4,3 +4,4 @@ db/*_gen.go
 main
 .vscode/
 .idea
+.data

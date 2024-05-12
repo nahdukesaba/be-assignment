@@ -14,7 +14,7 @@ type DB struct {
 }
 
 func NewDB() *DB {
-	opt, err := pg.ParseURL("postgres://postgres:postgres@localhost:5432/postgres?sslmode=disable")
+	opt, err := pg.ParseURL("postgres://postgres:postgres@db:5432/postgres?sslmode=disable")
 	if err != nil {
 		log.Println("err ParseURL " + err.Error())
 		panic(err)
