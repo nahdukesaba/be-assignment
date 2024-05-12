@@ -49,13 +49,14 @@ func (ph *PaymentHandler) Send(c *gin.Context) {
 	}
 
 	form.Username = helpers.GetusernameFromToken(c)
-	if err := ph.paymentService.SendBalance(c, form); err != nil {
+	result, err := ph.paymentService.SendBalance(c, form)
+	if err != nil {
 		log.Printf("SendBalance error : %v\n", err)
 		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, helpers.SuccessMessage)
+	c.JSON(http.StatusOK, helpers.SuccessDataMessage(result))
 }
 
 // Withdraw Withdraw account balance
@@ -85,13 +86,14 @@ func (ph *PaymentHandler) Withdraw(c *gin.Context) {
 	}
 
 	form.Username = helpers.GetusernameFromToken(c)
-	if err := ph.paymentService.WithdrawBalance(c, form); err != nil {
+	result, err := ph.paymentService.WithdrawBalance(c, form)
+	if err != nil {
 		log.Printf("WithdrawBalance error : %v\n", err)
 		c.JSON(http.StatusBadRequest, map[string]interface{}{"error": err.Error()})
 		return
 	}
 
-	c.JSON(http.StatusOK, helpers.SuccessMessage)
+	c.JSON(http.StatusOK, helpers.SuccessDataMessage(result))
 }
 
 // GetAccountsUser Get all account from specified user
@@ -120,7 +122,7 @@ func (ph *PaymentHandler) GetAccountsUser(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{"data": result})
+	c.JSON(http.StatusOK, helpers.SuccessDataMessage(result))
 }
 
 // GetTransactionsAccount Get all transactions from specified account
@@ -153,5 +155,5 @@ func (ph *PaymentHandler) GetTransactionsAccount(c *gin.Context) {
 		return
 	}
 
-	c.JSON(http.StatusOK, map[string]interface{}{"data": result})
+	c.JSON(http.StatusOK, helpers.SuccessDataMessage(result))
 }

@@ -26,3 +26,21 @@ func NewTransactionsResponse(data []repo.Transaction) []TransactionsResponse {
 
 	return res
 }
+
+type SendWithdrawResponse struct {
+	AccountID string  `json:"account_id"`
+	Balance   float64 `json:"balance"`
+	Limit     float64 `json:"limit_credit,omitempty"`
+	Status    string  `json:"status_transaction"`
+}
+
+func NewSendWithdrawResponse(acc *repo.Account, status string) *SendWithdrawResponse {
+	res := new(SendWithdrawResponse)
+	if acc != nil {
+		res.AccountID = acc.AccountID
+		res.Balance = acc.Balance
+		res.Limit = acc.Limit
+		res.Status = status
+	}
+	return res
+}

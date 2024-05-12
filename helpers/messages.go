@@ -14,3 +14,7 @@ type Message struct {
 	Success bool        `json:"success,omitempty"`
 	Data    interface{} `json:"data,omitempty"`
 }
+
+func SuccessDataMessage(data interface{}) map[string]interface{} {
+	return map[string]interface{}{"data": data}
+}

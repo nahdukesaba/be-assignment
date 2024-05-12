@@ -17,8 +17,8 @@ type PaymentService struct {
 }
 
 type Payments interface {
-	WithdrawBalance(ctx *gin.Context, form *request.TransactionRequest) error
-	SendBalance(ctx *gin.Context, form *request.TransactionRequest) error
+	WithdrawBalance(ctx *gin.Context, form *request.TransactionRequest) (*response.SendWithdrawResponse, error)
+	SendBalance(ctx *gin.Context, form *request.TransactionRequest) (*response.SendWithdrawResponse, error)
 	GetAllAccountsUser(ctx *gin.Context, username string) ([]response.AccountsResponse, error)
 	GetAllTransactionsAccount(ctx *gin.Context, form *request.TransactionsAccountRequest) ([]response.TransactionsResponse, error)
 }
@@ -30,34 +30,34 @@ func NewPaymentService(db *repo.DB) Payments {
 	}
 }
 
-func (ps *PaymentService) WithdrawBalance(ctx *gin.Context, form *request.TransactionRequest) error {
+func (ps *PaymentService) WithdrawBalance(ctx *gin.Context, form *request.TransactionRequest) (*response.SendWithdrawResponse, error) {
 	if err := form.Validate(false); err != nil {
-		return err
+		return nil, err
 	}
 
 	userAccount, err := ps.userRepo.GetUserAccountByAccountNumber(ctx, form.Sender)
 	if err != nil {
 		log.Printf("Error GetUserAccountByAccountNumber. err: %s\n", err)
-		return err
+		return nil, err
 	}
 
 	if userAccount.User.Username != form.Username {
 		log.Println("Error wrong account")
-		return errors.New("error wrong account")
+		return nil, errors.New("error wrong account")
 	}
 
 	if userAccount.AccountType == repo.AccountTypeDebit {
 		remaining := userAccount.Balance - form.Amount
 		if remaining < 0 {
 			log.Println("insufficient balance")
-			return errors.New("your balance is insufficient")
+			return nil, errors.New("your balance is insufficient")
 		}
 		userAccount.Balance = remaining
 	} else if userAccount.AccountType == repo.AccountTypeCredit {
 		total := userAccount.Balance + form.Amount
 		if total > userAccount.Limit {
 			log.Println("credit limit exceeded")
-			return errors.New("your credit limit exceeded")
+			return nil, errors.New("your credit limit exceeded")
 		}
 		userAccount.Balance = total
 	}
@@ -73,46 +73,46 @@ func (ps *PaymentService) WithdrawBalance(ctx *gin.Context, form *request.Transa
 
 	if err := ps.paymentRepo.WithdrawBalance(ctx, userAccount, trans); err != nil {
 		log.Printf("Error WithdrawBalance. err: %s\n", err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	return response.NewSendWithdrawResponse(userAccount, repo.StatusSuccess), nil
 }
 
-func (ps *PaymentService) SendBalance(ctx *gin.Context, form *request.TransactionRequest) error {
+func (ps *PaymentService) SendBalance(ctx *gin.Context, form *request.TransactionRequest) (*response.SendWithdrawResponse, error) {
 	if err := form.Validate(true); err != nil {
-		return err
+		return nil, err
 	}
 
 	userAccount, err := ps.userRepo.GetUserAccountByAccountNumber(ctx, form.Sender)
 	if err != nil {
 		log.Printf("Error GetUserAccountByAccountNumber. err: %s\n", err)
-		return err
+		return nil, err
 	}
 
 	recieverAccount, err := ps.userRepo.GetUserAccountByAccountNumber(ctx, form.Reciever)
 	if err != nil {
 		log.Printf("Error reciever GetUserAccountByAccountNumber. err: %s\n", err)
-		return err
+		return nil, err
 	}
 
 	if userAccount.User.Username != form.Username {
 		log.Println("Error wrong account")
-		return errors.New("error wrong account")
+		return nil, errors.New("error wrong account")
 	}
 
 	if userAccount.AccountType == repo.AccountTypeDebit {
 		remaining := userAccount.Balance - form.Amount
 		if remaining < 0 {
 			log.Println("insufficient balance")
-			return errors.New("your balance is insufficient")
+			return nil, errors.New("your balance is insufficient")
 		}
 		userAccount.Balance = remaining
 	} else if userAccount.AccountType == repo.AccountTypeCredit {
 		total := userAccount.Balance + form.Amount
 		if total > userAccount.Limit {
 			log.Println("credit limit exceeded")
-			return errors.New("your credit limit exceeded")
+			return nil, errors.New("your credit limit exceeded")
 		}
 		userAccount.Balance = total
 	}
@@ -136,10 +136,10 @@ func (ps *PaymentService) SendBalance(ctx *gin.Context, form *request.Transactio
 
 	if err := ps.paymentRepo.SendBalance(ctx, userAccount, recieverAccount, trans); err != nil {
 		log.Printf("Error SendBalance. err: %s\n", err)
-		return err
+		return nil, err
 	}
 
-	return nil
+	return response.NewSendWithdrawResponse(userAccount, repo.StatusSuccess), nil
 }
 
 func (ps *PaymentService) GetAllAccountsUser(ctx *gin.Context, username string) ([]response.AccountsResponse, error) {
