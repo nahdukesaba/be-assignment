@@ -1,0 +1,28 @@
+services:
+  app:
+    container_name: app
+    image: beassignment
+    build:
+      dockerfile: Dockerfile
+      context: .
+    ports:
+      - "9000:9000"
+    depends_on:
+      - db
+
+  db:
+    container_name: db
+    image: postgres:latest
+    volumes:
+      - ./db:/docker-entrypoint-initdb.d
+    ports:
+      - "5432:5432"
+    restart: always
+    network_mode: host
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 3s
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: postgres

@@ -1,0 +1,249 @@
+basePath: /api
+definitions:
+  helpers.Message:
+    properties:
+      data: {}
+      error: {}
+      success:
+        type: boolean
+    type: object
+  request.TransactionRequest:
+    properties:
+      amount:
+        type: number
+      reciever:
+        type: string
+      sender:
+        type: string
+    type: object
+  request.UserRequest:
+    properties:
+      password:
+        type: string
+      username:
+        type: string
+    type: object
+  response.UserLoginUser:
+    properties:
+      token:
+        type: string
+      username:
+        type: string
+    type: object
+externalDocs:
+  description: OpenAPI
+  url: https://swagger.io/resources/open-api/
+host: localhost:9000
+info:
+  contact:
+    email: support@swagger.io
+    name: API Support
+    url: http://www.swagger.io/support
+  description: This is a sample server celler server.
+  license:
+    name: Apache 2.0
+    url: http://www.apache.org/licenses/LICENSE-2.0.html
+  termsOfService: http://swagger.io/terms/
+  title: Swagger Example API
+  version: "1.0"
+paths:
+  /api/account:
+    post:
+      consumes:
+      - application/json
+      description: get all account from specified user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: GetAccountsUser
+      tags:
+      - account
+  /api/account/:account_id:
+    post:
+      consumes:
+      - application/json
+      description: get all transactions from specified account
+      parameters:
+      - description: Account ID
+        in: path
+        name: id
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: GetTransactionsAccount
+      tags:
+      - account
+  /api/payment/send:
+    post:
+      consumes:
+      - application/json
+      description: Send balance to other account
+      parameters:
+      - description: Send balance
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/request.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: Send
+      tags:
+      - payment
+  /api/payment/withdraw:
+    post:
+      consumes:
+      - application/json
+      description: withdraw account balance
+      parameters:
+      - description: withdraw account balance
+        in: body
+        name: payment
+        required: true
+        schema:
+          $ref: '#/definitions/request.TransactionRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: Withdraw
+      tags:
+      - payment
+  /api/user/login:
+    post:
+      consumes:
+      - application/json
+      description: login the user
+      parameters:
+      - description: Update account
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/response.UserLoginUser'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: Login user
+      tags:
+      - user
+  /api/user/register:
+    post:
+      consumes:
+      - application/json
+      description: register the user
+      parameters:
+      - description: Update account
+        in: body
+        name: user
+        required: true
+        schema:
+          $ref: '#/definitions/request.UserRequest'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/helpers.Message'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/helpers.Message'
+      summary: Register user
+      tags:
+      - user
+securityDefinitions:
+  BasicAuth:
+    type: basic
+swagger: "2.0"

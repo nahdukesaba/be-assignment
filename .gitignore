@@ -1,0 +1,5 @@
+*.debug.yml
+*.prisma
+db/*_gen.go
+main
+.vscode/
