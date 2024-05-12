@@ -1,3 +1,42 @@
+# BE Assignment
+
+`Be Assignment` is Backend services which manages user’s accounts and transactions
+
+## Prerequisite
+
+To run this program, you will need
+
+### App Dependencies
+
+```$xslt
+- Golang 1.18+
+- Go mod enabled
+- docker
+```
+
+## How to Run
+
+- Verify and download dependencies `make build`
+- Run the docker to serve database `make docker`
+- Run the application `make run`
+
+
+### API List
+
+In this services you can login and register new user.
+Each Registered user will be given 2 accounts(credit/debit) and 1k debit balance as a **Bonus**
+
+Each account can withdraw or send their balance to another account. 
+User can also see all their account and check their account transaction history.
+
+You can check the swagger info for API Documentation by visiting
+http://localhost:9000/api/swagger/index.html
+
+
+
+--------------
+
+
 # Take home assignment
 
 
