@@ -48,7 +48,7 @@ info:
   version: "1.0"
 paths:
   /api/account:
-    post:
+    get:
       consumes:
       - application/json
       description: get all account from specified user
@@ -75,7 +75,7 @@ paths:
       tags:
       - account
   /api/account/:account_id:
-    post:
+    get:
       consumes:
       - application/json
       description: get all transactions from specified account

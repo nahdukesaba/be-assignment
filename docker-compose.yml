@@ -1,7 +1,7 @@
 services:
   db:
     container_name: db
-    image: postgres:latest
+    image: postgres
     volumes:
       - ./db:/docker-entrypoint-initdb.d
     ports:
@@ -14,11 +14,13 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_PASSWORD: postgres
       POSTGRES_DB: postgres
-#
+
 #  app:
 #    container_name: app
 #    image: beassignment
 #    network_mode: host
+#    environment:
+#      NODE_ENV: production
 #    build:
 #      dockerfile: Dockerfile
 #      context: .
@@ -27,3 +29,6 @@ services:
 #    depends_on:
 #      db:
 #        condition: service_healthy
+
+volumes:
+  postgres:

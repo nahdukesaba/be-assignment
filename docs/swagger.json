@@ -19,7 +19,7 @@
     "basePath": "/api",
     "paths": {
         "/api/account": {
-            "post": {
+            "get": {
                 "description": "get all account from specified user",
                 "consumes": [
                     "application/json"
@@ -60,7 +60,7 @@
             }
         },
         "/api/account/:account_id": {
-            "post": {
+            "get": {
                 "description": "get all transactions from specified account",
                 "consumes": [
                     "application/json"

@@ -25,7 +25,7 @@ const docTemplate = `{
     "basePath": "{{.BasePath}}",
     "paths": {
         "/api/account": {
-            "post": {
+            "get": {
                 "description": "get all account from specified user",
                 "consumes": [
                     "application/json"
@@ -66,7 +66,7 @@ const docTemplate = `{
             }
         },
         "/api/account/:account_id": {
-            "post": {
+            "get": {
                 "description": "get all transactions from specified account",
                 "consumes": [
                     "application/json"
